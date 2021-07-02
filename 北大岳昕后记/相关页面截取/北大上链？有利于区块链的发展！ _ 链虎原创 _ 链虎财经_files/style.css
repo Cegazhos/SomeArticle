@@ -1,0 +1,202 @@
+/*!
+	Theme name:	Chainhoo
+	Version: 1.0
+	Author: Cloud Stone
+	Author URI: http://sourcecode.com.cn
+	Template: JustNews
+*/
+@import url("../JustNews/css/style.css");
+@import url("css/lives.css");
+
+.main-slider .slides>li{
+	height:320px;
+}
+
+@media screen and (max-width: 375px){
+.main-slider .slides>li{
+	height:250px!important;
+}
+}
+
+
+.flexslider .slides img{
+	position:absolute;
+	height:100%;
+}
+
+.live-timer {
+  position: relative;
+  font-size: 12px;
+  color: #9B9B9B; }
+
+
+.post-type-archive .article-list .item {
+  padding: 20px; }
+
+.post-type-archive .article-list .item:hover {
+  padding: 20px 35px; }
+
+.post-type-archive .article-list .item-excerpt {
+  font-size: 16px; }
+
+.load-more-lives {
+  display: block !important;
+  padding: 12px;
+  color: #999;
+  line-height: 1.4;
+  font-size: 14px;
+  font-size: .14rem;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  max-width: none !important; }
+
+.rt {
+  float: right; }
+
+.kuaixun-input {
+  margin-top: 10px; }
+  .kuaixun-input input:focus {
+    outline: none; }
+
+.widget_top_authors li {
+  padding: 5px 0 !important;
+  min-height: 48px; }
+  .widget_top_authors li:before {
+    display: none; }
+.widget_top_authors .avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  float: left; }
+.widget_top_authors h4,
+.widget_top_authors .desc {
+  margin-left: 64px; }
+.widget_top_authors h4 {
+  font-size: 16px;
+  margin-bottom: 4px; }
+
+.widget_lives {
+  list-style: none; }
+  .widget_lives li {
+    border-top: 1px solid #ebebeb; }
+  .widget_lives .live-timer {
+	 padding-top: 3px;
+    margin-bottom: 4px;
+}
+  .widget_lives .load-more-wrap {
+    margin: 0; }
+
+.widget_lives .title{
+	cursor: pointer;
+	margin-bottom: .05rem;
+}
+
+.widget_lives .title:hover{
+	color:#ef7f2f;
+}
+
+.widget_lives .item:before{
+transition:.1s;
+	border-left-color:#ef7f2f;
+}
+
+.widget_lives .item.active:before{
+	transform:rotate(90deg);
+}
+
+.widget_lives .item-excerpt{
+	color: #757e88;
+	font-size:13px;
+	display:none;
+	height:0;
+	overflow:hidden;
+	transition: .3s;
+}
+
+.widget_lives .active .item-excerpt{
+	height:auto;
+}
+
+
+div.uimob800 .um-profile-photo a.um-profile-photo-img {
+  width: 70px !important;
+  height: 70px !important;
+  top: -35px !important; }
+
+div.uimob800 .um-header .um-profile-meta {
+  padding-left: 140px !important; }
+
+.um-cover,
+.um-cover-add {
+  height: 150px !important; }
+
+.page-template-about {
+  background: #F5F5F5; }
+  .page-template-about .header-banner {
+    background: url(http://www.chainhoo.com/wp-content/uploads/2018/04/banner.jpg) no-repeat center center;
+    background-size: cover;
+    height: 280px; }
+  .page-template-about .hentry {
+    background: #F5F5F5; }
+  .page-template-about .intro {
+  
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 40px; }
+    .page-template-about .intro .section-title {
+      font-size: 30px;
+      font-weight: normal;
+      margin-top: 30px; }
+  .page-template-about .culture {
+    margin-bottom: 40px; }
+  .page-template-about .culture-main {
+    background: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.075);
+    margin-bottom: 30px; }
+    .page-template-about .culture-main .text {
+      padding: 0 16px; }
+    .page-template-about .culture-main img {
+      margin-bottom: 0 !important; }
+    .page-template-about .culture-main .section-title {
+      font-size: 30px;
+      font-weight: normal;
+      margin-top: 30px;
+      margin-bottom: 20px; }
+    .page-template-about .culture-main h5 {
+      font-size: 1em;
+      font-weight: normal;
+      margin-bottom: 4px; }
+  .page-template-about .culture-more img {
+	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.075);
+    width: 100%; }
+  .page-template-about .culture-more .col {
+	  
+    margin-bottom: 20px; }
+
+  .page-template-about .team {
+    margin-top: 60px;
+    text-align: center; }
+    .page-template-about .team h4.section-title {
+      font-size: 36px;
+      font-weight: normal;
+      margin-bottom: 20px; }
+    .page-template-about .team .card {
+      background: #FFF; }
+
+
+@media (max-width:991px) {
+	.page-template-about .team .card {
+      background: none; }
+}
+
+    .page-template-about .team .info {
+      width: 100%;
+      min-height: 220px;
+      padding: 12px;
+      text-align: center; }
+    .page-template-about .team h4, .page-template-about .team h5, .page-template-about .team h6 {
+      font-size: 1em; }
+    .page-template-about .team h5, .page-template-about .team h6 {
+      color: #999;
+      line-height: 1.5; }

@@ -1,0 +1,67 @@
+(function ($) {
+  $(document).on('ready', function () {
+	  
+	  $('.widget_lives .title').on('click', function(e){
+		  $(this).parents('.item').toggleClass('active');
+		 $(this).siblings('.item-excerpt').slideToggle(100); 
+	  });
+
+    $('.article-list').on('click', '.load-more-lives', function () {
+      var e = $(this)
+      if (!e.hasClass('disabled')) {
+        var i = e.data('id'), n = e.data('page')
+        n = n ? n + 1 : 2, e.parent().addClass('loading'), $.ajax({
+          type: 'POST',
+          url: _wpcom_js.ajaxurl,
+          data: {action: 'wpcom_load_lives', id: i, page: n},
+          dataType: 'html',
+          success: function (i) {
+            if ('0' == i) {
+              e.addClass('disabled').text('已经到底了')
+            } else {
+              var a = $(i)
+              e.parent().before(a), a.find('.j-lazy').lazyload({
+                threshold: -50,
+                effect: 'fadeIn'
+              }), e.data('page', n), $(window).trigger('scroll')
+            }
+            e.parent().removeClass('loading')
+          },
+          error: function () {e.parent().removeClass('loading')}
+        })
+      }
+    })
+
+    var oldText = $('#flashmore').val();
+
+    $('#flashmore')
+      .on('focus', function (e) {
+        console.log('focus');
+        $(this).parent('.kuaixun-input').addClass('showColor showWidth')
+      })
+      .on('blur', function (e) {
+        console.log('blur');
+
+        if (!$(this).val())
+          $(this).parent('.kuaixun-input').removeClass('showColor showWidth')
+      })
+      .on('keyup', function(e){
+        if ($(this).val() != '' && $(this).val() != oldText) {
+          $.ajax(_wpcom_js.ajaxurl, {
+            data: {
+              'action': 'wpcom_search_lives',
+              's' : $(this).val()
+            }
+          }).done(function (data) {
+            $('.sec-panel-search-results').html(data).show()
+            $('.sec-panel-content').hide()
+          })
+        } else {
+          $('.sec-panel-search-results').hide()
+          $('.sec-panel-content').show()
+        }
+
+        oldText = $(this).val();
+      })
+  })
+})(jQuery)
