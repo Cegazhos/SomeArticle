@@ -1,0 +1,312 @@
+if(typeof videoType=="undefined"){
+	videoType = "0";
+}
+var a_w = document.documentElement.clientWidth || window.innerWidth;
+var isMobile=judgeisMobile();
+var shareData=[
+	{
+	"dataapp":"QZone",
+	"className":"qzone nativeSharespecial",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconkongjian.png",
+	"text":"QQ空间"
+	},{
+	"dataapp":"sinaWeibo",
+	"className":"weibo nativeSharespecial",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconweibo.png",
+	"text":"微博"
+	},{
+	"dataapp":"QQ",
+	"className":"qq",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconQQ.png",
+	"text":"QQ好友"
+	},{
+	"dataapp":"weixin",
+	"className":"nativeShare weixin",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconweixin.png",
+	"text":"微信"
+	},{"dataapp":"weixinFriend",
+	"className":"nativeShare weixinpengyouquan",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconpengyouquan.png",
+	"text":"朋友圈"
+}];
+function getAjaxScript(url){
+	var el = document.createElement("script");
+	el.type="text/javascript";
+	el.lang="javascript";
+	el.src = url;
+	document.getElementsByTagName("body")[0].appendChild(el);
+}
+if(isMobile){//移动端
+	var config = {
+		title:shareTitle,
+		desc:shareDesc,
+		img:mobileflvImgUrl
+	};
+	var share_obj = new nativeShare('nativeShare',config);
+}else{//pc端
+	var shareObj={
+		"shareTitle":shareTitle,
+		"shareUrl":document.location.href,
+		"des":shareDesc,
+		"pic":mobileflvImgUrl
+	}
+	getAjaxScript("//r.img.cctvpic.com/photoAlbum/templet/js/shareToSnsCommon1.1.js");
+	getAjaxScript("//r.img.cctvpic.com/photoAlbum/templet/js/jquery.qrcode.min.js");
+	$("#nativeShare").html('<div class="bdsharebuttonbox"><ul class="icon"><li><a href="javascript:void(0);" class="ico2" data-fx="qz-btn"><svg id="空间" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70"><path id="路径_8" data-name="路径 8" d="M247.3,240.939a.657.657,0,0,1,.6.349l5.768,10.567a.7.7,0,0,0,.493.369l11.966,2.2a.677.677,0,0,1,.513.451.616.616,0,0,1-.164.657l-8.908,9.336h.308a17.806,17.806,0,0,0,2.607-.1c.554-.1.575.267.575.267a30.534,30.534,0,0,1-3.264,1.108l1.827,10.936a.636.636,0,0,1-.246.616.677.677,0,0,1-.677,0l-11.043-5.253a.8.8,0,0,0-.616,0l-11.043,5.253a.677.677,0,0,1-.677,0,.636.636,0,0,1-.246-.616l2.053-11.983a.739.739,0,0,0-.185-.616l-8.826-8.946a.677.677,0,0,1,.37-1.108l11.946-2.2a.657.657,0,0,0,.493-.369l5.788-10.567A.657.657,0,0,1,247.3,240.939Zm1.232,13.152a26.691,26.691,0,0,0-11.166,2.319.451.451,0,0,0,.308.841,23.653,23.653,0,0,1,11.884.718.246.246,0,0,1,0,.41c-.123.1-8.58,6.156-11.125,8.207a.657.657,0,0,0,.349,1.17,24.324,24.324,0,0,0,2.791.267,52.749,52.749,0,0,0,16.215-2.052l-.226-1.108H257.4a33.7,33.7,0,0,1-10.263-1.518.257.257,0,0,1-.1-.472c1.724-1.334,6.671-4.76,8.416-6.156.328-.287.41-.657,0-.964a13.982,13.982,0,0,0-6.815-1.58Z" transform="translate(-212.303 -224.406)" fill="#ffcd00"/><path id="路径_9" data-name="路径 9" d="M35,2.059A32.941,32.941,0,1,1,2.059,35,32.941,32.941,0,0,1,35,2.059M35,0A35,35,0,1,0,70,35,35,35,0,0,0,35,0Z" fill="#ffcd00"/></svg></a></li>	<li><a href="javascript:void(0);" class="ico1" data-fx="weibo"><svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70"><path id="路径_10" data-name="路径 10" d="M35,2.059A32.941,32.941,0,1,1,2.059,35,32.941,32.941,0,0,1,35,2.059M35,0A35,35,0,1,0,70,35,35,35,0,0,0,35,0Z" fill="#e52525"/><path id="路径_11" data-name="路径 11" d="M251.336,284.875a1.581,1.581,0,0,1-3-.951,7.787,7.787,0,0,0-1.632-7.58,7.67,7.67,0,0,0-7.341-2.36,1.53,1.53,0,0,1-1.626-2.34,1.56,1.56,0,0,1,.989-.677,10.853,10.853,0,0,1,12.546,13.95Zm-10.883-5.849a1.369,1.369,0,0,1-1.622-1.033,1.364,1.364,0,0,1,1.047-1.612,5.338,5.338,0,0,1,5.051,1.633,5.233,5.233,0,0,1,1.088,5.167,1.223,1.223,0,0,1-1.7.785,1.337,1.337,0,0,1-.781-.667,1.351,1.351,0,0,1-.081-1.028,2.574,2.574,0,0,0-3-3.327Zm1.17,7.646a6.186,6.186,0,0,1,4.969,5.6c0,5.146-7.413,11.614-18.48,11.614-8.583-.062-17.289-4.2-17.289-10.891,0-3.555,2.238-7.647,6.16-11.532,5.154-5.146,11.191-7.5,13.449-5.249a4.675,4.675,0,0,1,.411,4.877c-.329,1.054.986.475.986.475,4.107-1.757,7.823-1.86,9.158,0a4.281,4.281,0,0,1,0,4.133c-.287.765.1.868.678,1.054Zm-13.593,14.8c6.8-.682,11.95-4.836,11.5-9.3s-6.3-7.522-13.08-6.841-11.93,4.815-11.519,9.279S221.234,302.131,228.031,301.47Zm.678-12.71a5.033,5.033,0,0,1,3.563,2.625,5.092,5.092,0,0,1,.133,4.442,7.333,7.333,0,0,1-8.768,3.72,5,5,0,0,1-3.321-2.808,5.051,5.051,0,0,1,.117-4.363,7.374,7.374,0,0,1,8.213-3.616Zm-2.464,7.419a1.824,1.824,0,0,0-.739-2.687,2.6,2.6,0,0,0-3.06,1.033,1.8,1.8,0,0,0,.7,2.666,2.6,2.6,0,0,0,3.121-1.013Z" transform="translate(-196.357 -252.293)" fill="#e52525"/></svg>	</a></li>	<li><a href="javascript:void(0);" class="ico6" data-fx="qq-btn"><svg id="QQ" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70"><path id="路径_4" data-name="路径 4" d="M35,2.059A32.941,32.941,0,1,1,2.059,35,32.941,32.941,0,0,1,35,2.059M35,0A35,35,0,1,0,70,35,35,35,0,0,0,35,0Z" fill="#15b6f6"/><path id="路径_5" data-name="路径 5" d="M315.267,271.248c-.827.1-3.245-3.8-3.245-3.8a10.009,10.009,0,0,1-3.7,7.325c1.24.369,3.989,1.375,3.327,2.483s-9.093.574-11.573.287c-2.48.287-11.036.6-11.573-.287s2.067-2.052,3.327-2.483a10.01,10.01,0,0,1-3.72-7.325s-2.521,3.9-3.265,3.8c-.393,0-.909-2.052.682-7.182.744-2.38,1.591-4.35,2.914-7.613-.227-8.413,3.348-15.512,11.614-15.512s11.842,6.915,11.614,15.471c1.323,3.263,2.17,5.253,2.914,7.613,1.591,5.048,1.075,7.141.682,7.182Z" transform="translate(-265.057 -224.408)" fill="#15b6f6"/></svg>	</a></li>	<li><a href="javascript:void(0);" class="ico3" id="fucengweixin"><svg id="微信" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70"><path id="路径_1" data-name="路径 1" d="M35,2.059A32.947,32.947,0,0,1,48.153,65.21,32.472,32.472,0,0,1,35,67.941,32.941,32.941,0,0,1,35,2.059M35,0A35,35,0,1,0,70,35,35,35,0,0,0,35,0Z" fill="#00c800"/><path id="路径_2" data-name="路径 2" d="M476.564,437.369c0-5.849-5.848-10.6-12.4-10.6-6.944,0-12.4,4.753-12.4,10.6s5.477,10.6,12.4,10.6a17.857,17.857,0,0,0,4.381-.744l3.885,2.211-1.1-3.658A11.1,11.1,0,0,0,476.564,437.369ZM460.3,435.736a1.653,1.653,0,1,1,1.653-1.653A1.653,1.653,0,0,1,460.3,435.736Zm8.039,0a1.674,1.674,0,1,1,1.653-1.653A1.653,1.653,0,0,1,468.339,435.736Z" transform="translate(-420.946 -397.646)" fill="#00c800"/><path id="路径_3" data-name="路径 3" d="M225.435,266.562c-8.039,0-14.611,5.477-14.611,12.4a11.986,11.986,0,0,0,5.849,9.878l-1.467,4.4,5.1-2.563a25.952,25.952,0,0,0,5.125.723H226.8a10.621,10.621,0,0,1-.455-3.059,11.986,11.986,0,0,1,12.4-11.573,10.452,10.452,0,0,1,1.405.1c-1.261-5.89-7.543-10.333-14.735-10.333Zm-4.919,10.023a2.067,2.067,0,1,1,2.067-2.067A2.067,2.067,0,0,1,220.516,276.585Zm10.209,0a2.067,2.067,0,1,1,2.067-2.067A2.067,2.067,0,0,1,230.725,276.585Z" transform="translate(-196.451 -248.363)" fill="#00c800"/></svg></a></li><div class="clear"></div></ul></div>	<div id="cntvshare_weixin" class="zwweixin_weixin_bottom"><div class="sharebg"><div id="codeqr2" class="wxcodeqr" ></div> <div class="zwrweixin_headfoot">扫一扫 分享到微信</div></div><div class="zwweixin_head"></div></div>');
+	var shareToWeiboBtn = $("[data-fx='weibo']");
+    shareToWeiboBtn.live("click",function() {
+        var u = "//service.weibo.com/share/share.php?appkey=&title=" + shareObj.shareTitle + "&url=" + shareObj.shareUrl + "&pic=" + shareObj.pic + "&searchPic=false&style=simple&appkey=";
+        window.open(u)
+    });
+	var ua = "canvas";
+	if (navigator.userAgent.indexOf("MSIE") > -1) {
+    ua = "table"
+    }
+	$("#fucengweixin").click(function(){
+	if( $(".zwweixin_weixin_bottom").hasClass("cur")){
+	  $(".zwweixin_weixin_bottom").removeClass("cur");
+	 $("#codeqr2").html("");
+	}else{
+	 $(".zwweixin_weixin_bottom").addClass("cur");
+	 if($(".zwweixin_weixin_bottom").find("canvas").length==0){
+		jQuery("#codeqr2").qrcode({
+		render: ua,
+		foreground: "#000",
+		background: "#FFF",
+			width: 102,
+			height: 102,
+			text: window.location.href
+		});
+			  }
+		}
+	   
+	})
+	$('body').click(function(e) {
+		var target = $(e.target);
+		 if(!target.is('.zwweixin_weixin_bottom')&&!target.parents().is('.content_19568 .cnt_share .icon a.ico3')){
+			$(".zwweixin_weixin_bottom").removeClass("cur");
+			 $("#codeqr2").html("");
+		  }
+	  });
+}
+//解决图文插视频问题
+//因为如果既有视频又有音频的话，id后缀是1,2,3是从上到下排的的所有根据id就找不到指定的视频和音频，所有只能根据video和audio的索引来找到相应的节点来设置宽高
+function IEVersionFn() {
+	var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+	var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+	var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+	var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+	if(isIE) {
+		var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+		reIE.test(userAgent);
+		var fIEVersion = parseFloat(RegExp["$1"]);
+		if(fIEVersion == 7) {
+			return 7;
+		} else if(fIEVersion == 8) {
+			return 8;
+		} else if(fIEVersion == 9) {
+			return 9;
+		} else if(fIEVersion == 10) {
+			return 10;
+		} else {
+			return 6;//IE版本<=7
+		}   
+	} else if(isEdge) {
+		return 'edge';//edge
+	} else if(isIE11) {
+		return 11; //IE11  
+	}else{
+		return -1;//不是ie浏览器
+	}
+}
+function changeAudioSize(){//设置音频宽高
+	if($("audio").length>0){
+		for(var i=0; i< $("audio").length;i++){
+			var _w = a_w;
+			var audiodom=$("audio").eq(i).parents("div[class^=ystg_ind_]");
+			if(audiodom.hasClass("ystg_ind_01")){//如果含有以上class名字需要宽度减去40
+				_w=_w-40;
+			}
+			$("audio").eq(i).parents("span").css({"width":_w,"height":"57px"});
+			$("audio").eq(i).parent().css({"width":_w});
+			$("audio").eq(i).css({"width":_w});
+		}
+	}
+}
+function changeVideoSize(){//设置视频宽高，移动端和pc端视频标签不一致，所以要分开设置视频宽高
+	if(isMobile) {//移动端
+		if($("video").length>0){
+			if($("video").length==1){//移动端，单视频是video标签
+				if($("#myFlash").length>0){
+					var _w = a_w;
+					var videodom=$("#myFlash").parents("div[class^=ystg_ind_]");
+					if(videodom.hasClass("ystg_ind_01")){//如果含有以上class名字需要宽度减去40
+						_w=_w-40;
+					}
+					if(playerParas.w>playerParas.h){  // 判断横版视频的时候16:9 竖版视频9:16
+						var _h=Math.ceil(_w/16*9);
+					}else{
+						var _h=parseInt(_w/9*16);
+					}
+					$("#myFlash").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":_w+"px "+_h+"px"});
+					$("#myFlash").find("video").css({"width":_w+"px","height":_h+"px"});
+				}
+			}else{//移动端，多视频
+				for(var i=0; i<$("video").length;i++){
+					var _w = a_w;
+					var dom=$("video").eq(i).parents("div[class^=ystg_ind_]");
+					if(dom.hasClass("ystg_ind_01")){//如果含有以上class名字需要宽度减去40
+						_w=_w-40;
+					}
+					var objStrtype = "videoType_"+videoArray[i];
+					var objtype = eval("(" + objStrtype + ")");
+					if(objtype =="0"){  // 判断横版视频的时候16:9 竖版视频9:16
+						var _h=Math.ceil(_w/16*9);
+					}else{
+						var _h=parseInt(_w/9*16);
+					}
+					$("video").eq(i).parents("span").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+					$("video").eq(i).css({"width":_w+"px","height":_h+"px"});
+					$("video").eq(i).parent().css({"width":_w+"px","height":_h+"px"});
+				}
+			}
+		}
+	}else{//pc端
+		if($("embed").length>0){ // ie11单视频，多视频
+			for(var i=0; i<$("embed").length;i++){
+				 if(IEVersionFn() !=-1){
+					$("embed").eq(i).parents("span").css({"display":"inline-block","overflow":"hidden"});
+				}
+			}
+		}
+		if($("object").length>0){// ie10以下单视频，多视频
+			for(var i=0; i<$("object").length;i++){
+				$("object").eq(i).parents("span").css({"display":"inline-block","overflow":"hidden"});
+			}
+		}
+		for(var i=0;i<$("span[id^=flash_]").length;i++){ //非ie多视频创建/未创建
+			if($("#flash_"+i).find("img").length>0&&($("#flash_"+i).find("video").length>0 || $("#flash_"+i).find("audio").length==0)){
+				var _w = a_w;
+				var embeddom=$("video").eq(i).parents("div[class^=ystg_ind_]");
+				if(embeddom.hasClass("ystg_ind_01")){//如果含有以上class名字需要宽度减去40
+					_w=_w-40;
+				}
+				var objStrtype = "videoType_"+i;
+				var objtype = eval("(" + objStrtype + ")");
+				if(objtype =="0"){  // 判断横版视频的时候16:9 竖版视频9:16
+					var _h=Math.ceil(_w/16*9);
+				}else{
+					_w = 338
+					var _h=600;
+				}
+				$("#flash_"+i).css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+			}
+		}
+		if($("#myFlash").find("img").length>0&&$("#myFlash").find("audio").length==0){//单视频创建/未创建
+			var _w = a_w;
+			var embeddom=$("video").eq(i).parents("div[class^=ystg_ind_]");
+			if(embeddom.hasClass("ystg_ind_01")){//如果含有以上class名字需要宽度减去40
+				_w=_w-40;
+			}
+			if(playerParas.w>playerParas.h){  // 判断横版视频的时候16:9 竖版视频9:16
+				var _h=Math.ceil(_w/16*9);
+			}else{
+				_w = 338
+				var _h=600;
+			}
+			$("#myFlash").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+			$("#myFlash>img").css({"width":_w+"px","height":_h+"px"});
+		}
+	}
+}
+var videoArray=[];
+function getvideo(){
+	if($("span[id^=flash_]").length>0){//多视频，单音频，多音频，视频和音频都有，只能根据id中含有flash_来判断视频和音频总长度
+		var aa=setInterval(function(){
+			var loadlen = 0;
+			for(var i=0;i<$("span[id^=flash_]").length;i++){
+				var objStrtype = "videoType_"+i;
+				var objtype = eval("(" + objStrtype + ")");
+				if(objtype=="2"){// 音频
+				}else{
+					videoArray.push(i);
+				}
+				if(($("#flash_"+i).find("video").length>0) ||($("#flash_"+i).find("audio").length>0) || ($("#flash_"+i).find("embed").length>0)||($("#flash_"+i).find("object").length>0)){
+					//视频和音频是否加载完，移动端视频看是都有"#html5Player-flash_"+i这个id名字，pc端看对否有#flashplayer_flash_"+i这个id名字
+					loadlen++;
+					if(loadlen==($("span[id^=flash_]").length)){//视频和音频加载完
+						clearInterval(aa);
+						changeVideoSize();
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				}
+				if(IEVersionFn() !=-1 && i==($("span[id^=flash_]").length-1) && loadlen<$("span[id^=flash_]").length){
+					$("#j_pullLoader").css("display","none");
+					$("#text_area").css("display","block");
+				}
+			}
+		},100);
+	}else{//单视频的情况移动端是video标签，pc端是embed。id名字也不一样，所以要分开处理
+		if(isMobile) {
+			if($("#myFlash").length>0){//移动端单视频
+				var bb=setInterval(function(){
+					if($("#myFlash").find("video").length>0 || $("#myFlash").find("audio").length>0){//判断视频是否加载完，需要判断里面的内容是否为空
+						clearInterval(bb);
+						changeVideoSize();
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}
+		}else{
+			if($("#myFlash").length>0){//pc端单视频
+				var dd=setInterval(function(){
+					if($("video").length>0||$("audio").length>0||$("embed").html()!=null||$("object").html()!=null||$("#myFlash").find("img").length>0){//判断视频是否加载完，需要判断里面的内容是否为空
+					//视频加载完
+						clearInterval(dd);
+						changeVideoSize();
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}
+		}
+	}
+}
+$(function () {
+	if(($("#flash_0").length>0) || ($("#mymusicplayer").length>0)|| ($("#myFlash").length>0)){//如果有是视频和音频存在的时候再设置宽高
+		a_w =parseInt($("#title_area").width());
+		getvideo();
+		for(var j =0;j<$(".flash_install").length;j++){
+			$(".flash_install").eq(j).parents("span").css({"position":"relative"});
+			$(".flash_install").eq(j).find("img").css({"display":"block"});
+		}
+	}else{
+		$("#j_pullLoader").css("display","none");
+		$("#text_area").css("display","block");
+	}
+});
+function changeSize(){
+	if(($("#flash_0").length>0)|| ($("#mymusicplayer").length>0)||($("#myFlash").length>0)){
+		a_w =parseInt($("#title_area").width());
+		changeVideoSize();
+		changeAudioSize();
+	}
+}
+$(window).resize(function(){
+	if(isMobile){
+		setTimeout(changeSize,300);
+	}
+})
+if(typeof hdprop!="undefined"){
+	if(hdprop.length>0 && eval("("+hdprop+")").allow_share==0){	
+	}else{
+		 $(".content_19568 .fenxiang").remove();
+	}
+}else{
+	   $(".content_19568 .fenxiang").remove();
+}

@@ -1,0 +1,508 @@
+//var hoffsetH_h = window.screen.availHeight;
+//$("#j_pullLoader").css("height",(hoffsetH_h-250));
+//var html5PlayBtnBottomleft = true;  //控制视屏标在左下
+if(typeof videoType=="undefined"){
+	videoType = "0";
+}
+
+var shareData=[
+	{
+	"dataapp":"QZone",
+	"className":"qzone nativeSharespecial",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconkongjian.png",
+	"text":"QQ空间"
+	},{
+	"dataapp":"sinaWeibo",
+	"className":"weibo nativeSharespecial",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconweibo.png",
+	"text":"微博"
+	},{
+	"dataapp":"QQ",
+	"className":"qq",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconQQ.png",
+	"text":"QQ好友"
+	},{
+	"dataapp":"weixin",
+	"className":"nativeShare weixin",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconweixin.png",
+	"text":"微信"
+	},{"dataapp":"weixinFriend",
+	"className":"nativeShare weixinpengyouquan",
+	"img":"//p1.img.cctvpic.com/photoAlbum/templet/common/DEPA1539311446672181/iconpengyouquan.png",
+	"text":"朋友圈"
+}];
+function getAjaxScript(url){
+	var el = document.createElement("script");
+	el.type="text/javascript";
+	el.lang="javascript";
+	el.src = url;
+	document.getElementsByTagName("body")[0].appendChild(el);
+}
+if(isMobile){//移动端
+	var config = {
+		title:shareTitle,
+		desc:shareDesc,
+		img:mobileflvImgUrl
+	};
+	var share_obj = new nativeShare('nativeShare',config);
+}else{//pc端
+	var shareObj={
+		"shareTitle":shareTitle,
+		"shareUrl":document.location.href,
+		"des":shareDesc,
+		"pic":mobileflvImgUrl
+	}
+	getAjaxScript("//r.img.cctvpic.com/photoAlbum/templet/js/shareToSnsCommon1.1.js");
+	$("#nativeShare").html('<div class="bdsharebuttonbox"><ul class="icon"><li><a href="javascript:void(0);" class="ico2" data-fx="qz-btn"></a></li><li><a href="javascript:void(0);" class="ico1" data-fx="weibo"></a></li><li><a href="javascript:void(0);" class="ico6" data-fx="qq-btn"></a></li><li><a href="javascript:void(0);" class="ico3" data-fx="wx-btn"></a></li><div class="clear"></div></ul></div>');
+	var shareToWeiboBtn = $("[data-fx='weibo']");
+    shareToWeiboBtn.live("click",function() {
+        var u = "//service.weibo.com/share/share.php?appkey=&title=" + shareObj.shareTitle + "&url=" + shareObj.shareUrl + "&pic=" + shareObj.pic + "&searchPic=false&style=simple&appkey=";
+        window.open(u)
+    });
+}
+//获取点赞数，增加点赞数
+function getdianzanNum(){
+	var url='//common.itv.cntv.cn/praise/batchGet?type=other&id='+domid+'&jsonp_callback=?&r='+Math.random();
+	$.ajax({
+		type:'get',
+		dataType:"jsonp",
+		url:url,
+		data:"",
+		success:function(data){
+			var _obj=data.data;
+			for(var a in _obj){
+				var dianzannum=_obj[a];
+			}
+			if(dianzannum<10000){
+				$("#zanNum").text(dianzannum);
+			}else{
+				$("#zanNum").text((dianzannum/10000).toFixed(1)+"万");
+			}
+		}
+	});
+}
+function dianzan(){
+	var url='//api.itv.cntv.cn/praise/add?type=other&id='+domid+'&jsonp_callback=?&r='+Math.random();
+	$.ajax({
+		type:'get',
+		dataType:"jsonp",
+		url:url,
+		data:"",
+		success:function(data){}
+	});
+}
+//解决图文插视频问题
+//因为如果既有视频又有音频的话，id后缀是1,2,3是从上到下排的的所有根据id就找不到指定的视频和音频，所有只能根据video和audio的索引来找到相应的节点来设置宽高
+function changeAudioSize(){//设置音频宽高
+	if($("audio").length>0){
+		for(var i=0; i< $("audio").length;i++){
+			var _w=document.documentElement.clientWidth || window.innerWidth;
+			if(_w>834){_w=834;}
+			_w=_w*0.8934;
+			var audiodom=$("audio").eq(i).parents("div[class^=type_ind_]");
+			if(audiodom.hasClass("type_ind_16")||audiodom.hasClass("type_ind_17")||audiodom.hasClass("type_ind_18")||audiodom.hasClass("type_ind_19")|| audiodom.hasClass("type_ind_20")){
+				_w=_w-fontSize*0.48;//如果含有以上class名字需要宽度减去0.48rem间距
+			}else if(audiodom.hasClass("type_ind_15")){
+				_w=_w-fontSize*0.8;//如果含有以上class名字需要宽度减去0.8rem间距
+			}
+			$("audio").eq(i).parents("p").css({"text-indent":"0"});
+			$("audio").eq(i).parents("span").css({"width":_w});
+			$("audio").eq(i).parent().css({"width":_w});
+			$("audio").eq(i).css({"width":_w});
+		}
+	}
+}
+
+function IEVersionFn() {
+	var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+	var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+	var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+	var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+	if(isIE) {
+		var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+		reIE.test(userAgent);
+		var fIEVersion = parseFloat(RegExp["$1"]);
+		if(fIEVersion == 7) {
+			return 7;
+		} else if(fIEVersion == 8) {
+			return 8;
+		} else if(fIEVersion == 9) {
+			return 9;
+		} else if(fIEVersion == 10) {
+			return 10;
+		} else {
+			return 6;//IE版本<=7
+		}   
+	} else if(isEdge) {
+		return 'edge';//edge
+	} else if(isIE11) {
+		return 11; //IE11  
+	}else{
+		return -1;//不是ie浏览器
+	}
+}
+
+function changeVideoSize(){//设置视频宽高，移动端和pc端视频标签不一致，所以要分开设置视频宽高
+
+
+	if(isMobile) {//移动端
+	
+		if($("video").length==1 && $("audio").length==0){//移动端，单视频是video标签
+			var _w=document.documentElement.clientWidth || window.innerWidth;
+			if(_w>834){_w=834;}
+			_w=_w*0.8934;
+			if($("#embed_playerid").length>0){
+				var videodom=$("#embed_playerid").parents("div[class^=type_ind_]");
+				if(videodom.hasClass("type_ind_16")||videodom.hasClass("type_ind_17")||videodom.hasClass("type_ind_18")||videodom.hasClass("type_ind_19")|| videodom.hasClass("type_ind_20")){
+					_w=_w-fontSize*0.48;//如果含有以上class名字需要宽度减去0.48rem间距
+				}else if(videodom.hasClass("type_ind_15")){
+					_w=_w-fontSize*0.8;//如果含有以上class名字需要宽度减去0.8rem间距
+				}
+				if(playerParas.w>playerParas.h){  // 判断横版视频的时候16:9 竖版视频9:16
+					var _h=_w/16*9;
+				}else{
+					var _h=_w/9*16;
+				}
+				$("#embed_playerid").parents("p").css({"text-indent":"0"});
+				$("#embed_playerid").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":_w+"px "+_h+"px"});
+				$("#myFlash").find("video").css({"width":_w+"px","height":_h+"px"});
+
+
+			}else if($("#myFlash").length>0){
+				var videodom=$("#myFlash").parents("div[class^=type_ind_]");
+				if(videodom.hasClass("type_ind_16")||videodom.hasClass("type_ind_17")||videodom.hasClass("type_ind_18")||videodom.hasClass("type_ind_19")|| videodom.hasClass("type_ind_20")){
+					_w=_w-fontSize*0.48;//如果含有以上class名字需要宽度减去0.48rem间距
+				}else if(videodom.hasClass("type_ind_15")){
+					_w=_w-fontSize*0.8;//如果含有以上class名字需要宽度减去0.8rem间距
+				}
+				if(playerParas.w>playerParas.h){  // 判断横版视频的时候16:9 竖版视频9:16
+					var _h=_w/16*9;
+				}else{
+					var _h=_w/9*16;
+				}
+				$("#myFlash").parents("p").css({"text-indent":"0"});
+				$("#myFlash").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":_w+"px "+_h+"px"});
+				$("#myFlash").find("video").css({"width":_w+"px","height":_h+"px"});
+
+			}
+	
+		}else{//移动端，多视频
+			for(var i=0; i<$("video").length;i++){
+				
+				var _w=document.documentElement.clientWidth || window.innerWidth;
+				if(_w>834){_w=834;}
+				_w=_w*0.8934;
+				var dom=$("video").eq(i).parents("div[class^=type_ind_]");
+				if(dom.hasClass("type_ind_16")||dom.hasClass("type_ind_17")||dom.hasClass("type_ind_18")||dom.hasClass("type_ind_19")|| dom.hasClass("type_ind_20")){
+					_w=_w-fontSize*0.48;//如果含有以上class名字需要宽度减去0.48rem间距
+				}else if(dom.hasClass("type_ind_15")){
+					_w=_w-fontSize*0.8;//如果含有以上class名字需要宽度减去0.8rem间距
+				}
+				var objStrtype = "videoType_"+i;
+				var objtype = eval("(" + objStrtype + ")");
+				if(objtype =="0"){  // 判断横版视频的时候16:9 竖版视频9:16
+					var _h=_w/16*9;
+				}else{
+					var _h=_w/9*16;
+				}
+				$("video").eq(i).parents("p").css({"text-indent":"0"});
+				$("video").eq(i).parents("span").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+				$("video").eq(i).css("width",_w+"px");
+				$("video").eq(i).css("height",_h+"px");
+				$("video").eq(i).parent().css("width",_w+"px");
+				$("video").eq(i).parent().css("height",_h+"px");
+				//$("video").eq(i).next().css({"background-size":"70px 70px","left":"50%","top":"50%","margin-left":"-35px","margin-top":"-35px"});
+				//$("video").eq(i).next().css({"background-size":"46px 46px","top":"unset","left":"30px","bottom":"30px","margin-top":"-23px"});
+			}
+		}
+	}else{//pc端，单视频是embed标签，ie下如果是object不做处理直接是视频默认宽高540*400
+		
+			//if($("embed").length>0){
+			//if(videoType =="0"){   //判断横版视频的时候才改变宽高
+			if(($("video").length==1 && playerParas.w<playerParas.h)||$("embed").length==1 && playerParas.w<playerParas.h){  //单视频且是竖版视频直接返回  不执行
+				$("#myFlash").css({"background-color":"#fff"});
+				return;
+			}else{  //多视频
+		
+				for(var i=0; i<$("embed").length;i++){
+					
+					if($("embed").length >1){
+						var objStrtype = "videoType_"+i;
+						var objtype = eval("(" + objStrtype + ")");
+					}
+					if(($("embed").length ==1 && playerParas.w>playerParas.h)||objtype=="0"){
+						
+						var _w=document.documentElement.clientWidth || window.innerWidth;
+						if(_w>834){_w=834;}
+						_w=parseInt(_w*0.8934);
+						var embeddom=$("embed").eq(i).parents("div[class^=type_ind_]");
+						if(embeddom.hasClass("type_ind_16")||embeddom.hasClass("type_ind_17")||embeddom.hasClass("type_ind_18")||embeddom.hasClass("type_ind_19")|| embeddom.hasClass("type_ind_20")){
+							_w=parseInt(_w-fontSize*0.48);//如果含有以上class名字需要宽度减去0.48rem间距
+						}else if(embeddom.hasClass("type_ind_15")){
+							_w=parseInt(_w-fontSize*0.8);//如果含有以上class名字需要宽度减去0.8rem间距
+						}
+						var _h = parseInt(_w/16*9);
+						$("embed").eq(i).parents("p").css({"text-indent":"0","display":"block"});
+						//$("embed").eq(i).parents("span").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto"});
+						//$("embed").eq(i).css({"width":_w+"px","height":_h+"px"});
+						
+						if(IEVersionFn() ==-1){
+							
+							$("embed").eq(i).parents("span").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto"});
+							$("embed").eq(i).css({"width":_w+"px","height":_h+"px","margin-left":"0"});
+						}
+						if($("embed").length==1 && IEVersionFn() !=-1){
+							$("embed").eq(i).parents("span").css({"display":"inline-block","height":$("embed").height()+"px","overflow":"hidden"});
+							$("embed").eq(i).css({"margin-left":"0"});
+						}
+					}else{
+					
+					}
+				}
+			}
+			if($("object").length>0){
+				$("object").parents("p").css({"text-align":"center","text-indent":"0"});
+				if($("object").length==1 && videoType =="0"){  //单视频元素名 单视频横版才改变宽高
+					$("object").parents("span").css({"display":"inline-block","height":$("object").height()+"px","overflow":"hidden"});
+				}
+			}
+			for(var i=0;i<$("span[id^=flash_]").length;i++){
+				if($("#flash_"+i).find("img").length>0&&$("#flash_"+i).find("video").length>0){
+				
+						var _w=document.documentElement.clientWidth || window.innerWidth;
+						if(_w>834){_w=834;}
+						_w=parseInt(_w*0.8934);
+						var embeddom=$("embed").eq(i).parents("div[class^=type_ind_]");
+						if(embeddom.hasClass("type_ind_16")||embeddom.hasClass("type_ind_17")||embeddom.hasClass("type_ind_18")||embeddom.hasClass("type_ind_19")|| embeddom.hasClass("type_ind_20")){
+							_w=parseInt(_w-fontSize*0.48);//如果含有以上class名字需要宽度减去0.48rem间距
+						}else if(embeddom.hasClass("type_ind_15")){
+							_w=parseInt(_w-fontSize*0.8);//如果含有以上class名字需要宽度减去0.8rem间距
+						}
+						var _h = parseInt(_w/16*9);
+						$("#flash_"+i).parents("p").css({"text-indent":"0"});
+						$("#flash_"+i).css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+				}
+				if($("#flash_"+i).find("img").length>0&&$("#flash_"+i).find("audio").length==0){
+				
+						var _w=document.documentElement.clientWidth || window.innerWidth;
+						if(_w>834){_w=834;}
+						_w=parseInt(_w*0.8934);
+						var embeddom=$("embed").eq(i).parents("div[class^=type_ind_]");
+						if(embeddom.hasClass("type_ind_16")||embeddom.hasClass("type_ind_17")||embeddom.hasClass("type_ind_18")||embeddom.hasClass("type_ind_19")|| embeddom.hasClass("type_ind_20")){
+							_w=parseInt(_w-fontSize*0.48);//如果含有以上class名字需要宽度减去0.48rem间距
+						}else if(embeddom.hasClass("type_ind_15")){
+							_w=parseInt(_w-fontSize*0.8);//如果含有以上class名字需要宽度减去0.8rem间距
+						}
+						var _h =parseInt(_w/16*9);
+						$("#flash_"+i).parents("p").css({"text-indent":"0"});
+						$("#flash_"+i).css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+				}
+			}
+			if($("#myFlash").find("img").length>0&&$("#myFlash").find("audio").length==0){
+						var _w=document.documentElement.clientWidth || window.innerWidth;
+						if(_w>834){_w=834;}
+						_w=parseInt(_w*0.8934);
+						var embeddom=$("embed").eq(i).parents("div[class^=type_ind_]");
+						if(embeddom.hasClass("type_ind_16")||embeddom.hasClass("type_ind_17")||embeddom.hasClass("type_ind_18")||embeddom.hasClass("type_ind_19")|| embeddom.hasClass("type_ind_20")){
+							_w=parseInt(_w-fontSize*0.48);//如果含有以上class名字需要宽度减去0.48rem间距
+						}else if(embeddom.hasClass("type_ind_15")){
+							_w=parseInt(_w-fontSize*0.8);//如果含有以上class名字需要宽度减去0.8rem间距
+						}
+						var _h = parseInt(_w/16*9);
+						$("#myFlash").parent("p").css({"text-indent":"0"});
+						$("#myFlash").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto","background-size":"100% 100%"});
+						$("#myFlash>img").css({"width":_w+"px","height":_h+"px"});
+				}
+			//}
+		/*}else{
+			for(var i=0; i<$("object").length;i++){
+				var _w=document.documentElement.clientWidth || window.innerWidth;
+				if(_w>834){_w=834;}
+				_w=_w*0.8934;
+				var _h = _w/16*9;
+				var objectdom=$("object").eq(i).parents("div[class^=type_ind_]");
+				if(objectdom.hasClass("type_ind_16")||objectdom.hasClass("type_ind_17")||objectdom.hasClass("type_ind_18")||objectdom.hasClass("type_ind_19")|| objectdom.hasClass("type_ind_20")){
+					_w=_w-fontSize*0.48;
+					_h = _w/16*9;
+				}else if(objectdom.hasClass("type_ind_15")){
+					_w=_w-fontSize*0.8;
+					_h = _w/16*9;
+				}
+				$("object").eq(i).parents("span").css({"width":_w+"px","height":_h+"px","display":"block","margin":"0 auto"});
+				$("object").eq(i).css({"width":_w+"px","height":_h+"px"});
+			}	
+		}*/
+	}
+}
+function getvideo(){
+
+	if($("span[id^=flash_]").length>0){//多视频，单音频，多音频，视频和音频都有，只能根据id中含有flash_来判断视频和音频总长度
+		var aa=setInterval(function(){
+			var loadlen = 0;
+			for(var i=0;i<$("span[id^=flash_]").length;i++){
+				
+				if(($("#flash_"+i).find("video").length>0) ||($("#flash_"+i).find("audio").length>0) || ($("#flash_"+i).find("embed").length>0)||($("#flash_"+i).find("object").length>0)){
+
+					//视频和音频是否加载完，移动端视频看是都有"#html5Player-flash_"+i这个id名字，pc端看对否有#flashplayer_flash_"+i这个id名字
+					loadlen++;
+					if(loadlen==($("span[id^=flash_]").length)){//视频和音频加载完
+						clearInterval(aa);
+						changeVideoSize();
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				}
+			}		},100);
+	}else{//单视频的情况移动端是video标签，pc端是embed。id名字也不一样，所以要分开处理
+		if(isMobile) {
+			var  sttimellen=0
+			if($("#embed_playerid").length>0){//移动端单视频
+				var bb=setInterval(function(){
+					if($("#embed_playerid").find("video").html()==null){//判断视频是否加载完，需要判断里面的内容是否为空
+						
+					}else{//视频加载完
+						clearInterval(bb);
+						changeVideoSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}else if($("#myFlash").length>0){//移动端单视频
+				
+				var bb=setInterval(function(){
+					if($("#myFlash").find("video").html()==null){//判断视频是否加载完，需要判断里面的内容是否为空
+					
+						
+					}else{//视频加载完
+						clearInterval(bb);
+						changeVideoSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}else{//移动端单音频
+				var dd=setInterval(function(){
+					if($("audio").html()==null){
+					}else{//单音频加载完
+						clearInterval(dd);
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}
+		}else{
+			if($("#embed_playerid").length>0){//pc端单视频
+				var cc=setInterval(function(){
+					if($("video").html()!=null||$("embed").html()!=null||$("object").html()!=null||$("#myFlash").find("img").length>0){//判断视频是否加载完，需要判断里面的内容是否为空
+	//视频加载完			
+						clearInterval(cc);
+						changeVideoSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}else if($("#myFlash").length>0){//pc端单视频
+				
+				var dd=setInterval(function(){
+					
+					if($("video").length>0||$("audio").length>0||$("embed").html()!=null||$("object").html()!=null||$("#myFlash").find("img").length>0){//判断视频是否加载完，需要判断里面的内容是否为空
+					//视频加载完
+						clearInterval(dd);
+						changeVideoSize();
+						changeAudioSize();
+						$("#j_pullLoader").css("display","none");
+						$("#text_area").css("display","block");
+					}
+				},100);
+			}
+		}
+	}
+}
+var domid=itemid1;
+$(function () {
+	if(($("#embed_playerid").length>0) || ($("#flash_0").length>0) || ($("#mymusicplayer").length>0)||($("#myFlash").length>0)){//如果有是视频和音频存在的时候再设置宽高
+		getvideo();
+		var __w =$("#text_area").width();
+		for(var j =0;j<$(".flash_install").length;j++){
+			$(".flash_install").eq(j).parent().css({"width":__w+"px"});
+			$(".flash_install").eq(j).find("img").css({"display":"block"});
+		}
+	}else{
+		$("#j_pullLoader").css("display","none");
+		$("#text_area").css("display","block");
+	}
+	/*getdianzanNum();
+	$(".fenxiang .dianzan").click(function(){
+		if($(this).hasClass("cur")){
+		}else{
+			$(this).addClass("cur");
+			dianzan();
+			var adddianzannum=Number($("#zanNum").text())+1;
+			if(adddianzannum<10000){
+				$("#zanNum").text(adddianzannum);
+			}else{
+				$("#zanNum").text((adddianzannum/10000).toFixed(1)+"万");
+			}
+		}
+		$(this).addClass("yinying");
+	})*/
+});
+function changeSize(){
+	if(($("#embed_playerid").length>0) || ($("#flash_0").length>0)|| ($("#mymusicplayer").length>0)||($("#myFlash").length>0)){
+		fontSize=$("html").css("font-size").split("px")[0];
+		changeVideoSize();
+		changeAudioSize();
+	}
+}
+function bindEvent(A, C, B) {
+	if (!document.addEventListener){
+		A.attachEvent(C, B)
+	} else {
+		A.addEventListener(C, B, false)
+	}
+}
+/* 工具方法：判断浏览器类型 */
+var bXrowser={ 
+	versions:function(){ 
+		var u = navigator.userAgent, app = navigator.appVersion; 
+		return {//移动终端浏览器版本信息 
+		trident: u.indexOf('Trident') > -1, //IE内核 
+		presto: u.indexOf('Presto') > -1, //opera内核 
+		webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核 
+		gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核 
+		mobile: !!u.match(/AppleWebKit.*Mobile.*/)||!!u.match(/AppleWebKit/), //是否为移动终端 
+		ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端 
+		android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器 
+		iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone
+		iPad: u.indexOf('iPad') > -1, //是否iPad 
+		qqbXrowser: u.indexOf('MQQBXrowser')>-1,//手机QQ浏览器 
+		webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部 
+		UCBXrowser: u.indexOf('UCBXrowser') > -1
+		}; 
+	}()
+	//,language:(navigator.bXrowserLanguage || navigator.language).toLowerCase()
+}
+$(window).resize(function(){
+	if(isMobile){
+		setTimeout(changeSize,300);
+	}
+	
+})
+/*
+if ("onorientationchange" in window){
+	if(bXrowser.versions.qqbXrowser){
+		bindEvent(window, "resize",function() {
+			setTimeout(changeSize,200);
+		});
+	}else{
+		bindEvent(window,"orientationchange",function(){
+			setTimeout(changeSize,200);
+		})
+	}
+}else{
+	bindEvent(window, "resize",function() {
+		setTimeout(changeSize,200);
+	});
+}*/
